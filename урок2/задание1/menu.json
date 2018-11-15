@@ -1,0 +1,9 @@
+{
+   "menu_items" : [
+	   {"href" : "/pic1.jpg", "title" : "Главная"},
+	   {"href" : "/catalogue/", "title" : "Каталог"},
+	   {"href" : "/gallery/", "title" : "Галерея"},
+	   {"href" : "/sdcfasd/", "title" : "Страница"}
+	   {"href" : "/sdcfasd/", "title" : "Страница2"}
+   ]
+}
