@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <style>
+    	.red_border {
+    		border: 1px solid #f00;
+    	}
+    </style>
+</head>
+<body>
+	<div id = "form">
+		<div id="name_wrap"><input name="input" type="text" id="name" placeholder="Имя" /></div>
+		<div id="phone_wrap"><input name="input" type="text" id="phone" placeholder="+7(000)000-0000" /></div>
+		<div id="email_wrap"><input name="input" type="text" id="email" placeholder="Адрес электронной почты" /></div>
+		<div id="cities_wrap"><input type="text" name="cities" id="cities" value="" onkeydown="if(event.keyCode==13) return false;" autocomplete="on" class="ac_input" /></div>
+		<div id="text_wrap"><input name="input" type="text" id="text" placeholder="произвольный текст" /></div>
+		<div id="button"><input type="button" value="отправить" onclick="newValidate()" /></div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript"></script>
+	<script src="js/jquery.autocomplete.js" type="text/javascript"></script>
+	<script src="js/engine.js" type="text/javascript"></script>
+	<script src="js/engine2.js" type="text/javascript"></script>
+</body>
+</html>
