@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+		}
+		.goods{
+			display: inline-block;
+		    width: 100px;
+		    height: 100px;
+		    border: 1px solid green;
+		    padding: 5px;
+		    margin: 10px;
+		    position: relative;
+		}
+
+		.button{
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			padding: 3px;
+			background-color: green;
+			color:white;
+		    width: 100%;
+		    text-align: center;
+		    cursor: pointer;
+		    transition: 0.4s;
+		}
+
+		.button:hover{
+			background-color: #fff;
+			color: green;
+		}
+
+		.button_busc{
+			padding: 3px;
+			background-color: green;
+			color:white;
+		    width: 100%;
+		    text-align: center;
+		    cursor: pointer;
+		    transition: 0.4s;
+		}
+		.button_busc:hover{
+			background-color: #fff;
+			color: green;
+		}
+
+		.modal{
+			position: fixed;
+			display: none;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			z-index: 10;
+			background-color: rgba(0,0,0,0.5);
+			justify-content: center;
+			align-items: center;
+		}
+		.modal_window{
+			width: 300px;
+			height: 400px;
+			background-color: #fff;
+		}
+		.modal_item{
+			border-bottom: 1px solid green;
+			padding: 5px; 
+		}
+
+		.delete {
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+	<div class="modal">
+		<div class="modal_window">
+			<div class="close">
+				X
+			</div>
+		</div>
+	</div>
+	<div class="basket">
+		
+	</div>
+	<div class="content">
+		
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script>	
+		var items = [
+	   {
+	   	"id":"1",
+	   	"title":"Товар 1",
+	   	"price":100
+	   },
+	   {
+	   	"id":"2",
+	   	"title":"Товар 2",
+	   	"price":200
+	   },
+	   {
+	   	"id":"3",
+	   	"title":"Товар 3",
+	   	"price":300
+	   },
+	   {
+	   	"id":"4",
+	   	"title":"Товар 4",
+	   	"price":400
+	   },
+	   {
+	   	"id":"5",
+	   	"title":"Товар 5",
+	   	"price":500
+	   },
+	   {
+	   	"id":"6",
+	   	"title":"Товар 6",
+	   	"price":600
+	   },
+   ];
+
+    function Goods (id,title,price) {
+   		this.id = id;
+   		this.title = title;
+   		this.price = price;
+
+   		this.render();
+   }
+
+   Goods.prototype.render = function() {
+   		var self = this;
+   		var div = $('<div/>')
+   					.addClass('goods');
+
+   		div.attr("id", this.id);	
+   		div.append($('<div/>').addClass('title').html(this.title));	
+   		div.append($('<div/>').addClass('price').html("Цена: "+this.price+"р"));	
+   		div.append($('<div/>').addClass('button').html("Купить"));		
+   		
+   		$(".content").append(div);
+
+   		$(".button").on("click", function(){
+   			if ($(this).parent().attr("id") == self.id){
+   				basket.add(self.id);
+   				basket.render();
+   			}
+   		});
+
+   };
+
+    function Basket () {
+   		this.summ = 0;
+   		this.count = 0;
+
+   		this.render();
+
+
+   		$(".close").on("click", function(){
+   			$('.modal').css("display","none");
+   		});
+
+
+
+   		$(document).mouseup(function (e){ // событие клика по веб-документу
+			if (!$(".modal_window").is(e.target) // если клик был не по нашему блоку
+			    && $(".modal_window").has(e.target).length === 0) { // и не по его дочерним элементам
+				$(".modal").hide(); // скрываем его
+			}
+		});
+   }
+   Basket.prototype.render = function() {
+   	   		var div = $('.basket');
+   	   		div.html('');
+   	   		div.append($('<div/>').addClass('count').html("Колличество товаров: "+ this.count));	
+   	   		div.append($('<div/>').addClass('summ').html("Сумма: " +this.summ));
+   	   		div.append($('<div/>').addClass('button_busc').html("Показать"));
+
+   	   	$(".button_busc").on("click", function(){
+   			$('.modal').css("display","flex");
+   		});
+
+   };
+
+   Basket.prototype.add = function(id){
+   		var self = this;
+   		items.forEach(function(elem,i,arr){
+   			if (id == elem.id){
+   				self.summ += elem.price;
+   				$('.modal_window').append($('<div/>').addClass('modal_item').attr('id', elem.id).html(elem.title+" Цена:"+elem.price+"&nbsp;&nbsp;<span class='delete' id='close_"+elem.id+"'>X</span>"));
+   			}
+   		});
+   		this.count++;
+   }
+
+   Basket.prototype.delete = function(id){
+   		var self = this;
+   		items.forEach(function(elem,i,arr){
+   			if (id == elem.id){
+   				self.summ -= elem.price;
+				$("#close_"+elem.id).parent().remove();
+		   				
+		   		$("#close_"+elem.id).on("click", function(){
+		   				basket.delete(elem.id);
+		   				basket.render();
+		   		});
+   			}
+   		});
+   		this.count--;
+   }
+
+   items.forEach(function(elem,i,arr){
+   		console.log(elem);
+   		var good = new Goods(elem.id, elem.title, elem.price);
+   });
+
+   var basket = new Basket();
+	</script>
+</body>
+</html>
