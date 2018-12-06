@@ -198,6 +198,10 @@
    			if (id == elem.id){
    				self.summ += elem.price;
    				$('.modal_window').append($('<div/>').addClass('modal_item').attr('id', elem.id).html(elem.title+" Цена:"+elem.price+"&nbsp;&nbsp;<span class='delete' id='close_"+elem.id+"'>X</span>"));
+   				$("#close_"+elem.id).on("click", function(){
+		   				basket.delete(elem.id);
+		   				basket.render();
+		   		});
    			}
    		});
    		this.count++;
@@ -209,11 +213,6 @@
    			if (id == elem.id){
    				self.summ -= elem.price;
 				$("#close_"+elem.id).parent().remove();
-		   				
-		   		$("#close_"+elem.id).on("click", function(){
-		   				basket.delete(elem.id);
-		   				basket.render();
-		   		});
    			}
    		});
    		this.count--;
